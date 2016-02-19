@@ -1,12 +1,12 @@
-class PingPong
+class CutthroatPingPong
   attr_reader :current_point, :point_player, :point_side, :player_point_opportunities, :player_point_serves, :player_point_receives
 
   SIDE_A = 'A'
   SIDE_B = 'B'
 
   def initialize
-    @player_positions = [ 1, 2, 3 ]
-    @point_player = 1
+    @player_positions = [ 0, 1, 2 ]
+    @point_player = 0
     @point_side = SIDE_A
     @current_point = 0
 
@@ -31,18 +31,17 @@ class PingPong
   private
 
   def set_stats
-    @player_point_opportunities[@point_player-1] += 1
+    @player_point_opportunities[@point_player] += 1
     if @point_side == SIDE_A
-      @player_point_serves[@point_player-1] += 1
+      @player_point_serves[@point_player] += 1
     else
-      @player_point_receives[@point_player-1] += 1
+      @player_point_receives[@point_player] += 1
     end
-
   end
 
   def change_positions
     if @current_point.even?
-      @point_player = @point_player % 3 + 1
+      @point_player = (@point_player+1) % 3
       @point_side = @point_side == SIDE_A ? SIDE_B : SIDE_A
       @player_positions.rotate!(-1)
     end
