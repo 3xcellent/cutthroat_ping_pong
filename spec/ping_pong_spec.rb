@@ -27,38 +27,61 @@ describe PingPong do
   end
 
   describe '#play_point`' do
-    let(:expected_results) {
-      [ [ 1, 1, 'A', [1,0,0], [1,0,0], [0,0,0] ],
-        [ 2, 1, 'A', [2,0,0], [2,0,0], [0,0,0] ],
-        [ 3, 2, 'B', [2,1,0], [2,0,0], [0,1,0] ],
-        [ 4, 2, 'B', [2,2,0], [2,0,0], [0,2,0] ],
-        [ 5, 3, 'A', [2,2,1], [2,0,1], [0,2,0] ],
-        [ 6, 3, 'A', [2,2,2], [2,0,2], [0,2,0] ],
-        [ 7, 1, 'B', [3,2,2], [2,0,2], [1,2,0] ],
-        [ 8, 1, 'B', [4,2,2], [2,0,2], [2,2,0] ],
-        [ 9, 2, 'A', [4,3,2], [2,1,2], [2,2,0] ],
-        [ 10, 2, 'A', [4,4,2], [2,2,2], [2,2,0] ],
-        [ 11, 3, 'B', [4,4,3], [2,2,2], [2,2,1] ],
-        [ 12, 3, 'B', [4,4,4], [2,2,2], [2,2,2] ],
-        [ 13, 1, 'A', [5,4,4], [3,2,2], [2,2,2] ] ] }
-
     before do
       allow(subject).to receive(:puts)
     end
 
-    it 'rotates players correctly' do
-      expected_results.each do |p|
-        # check who is playing for points, and what side they are on
-        expect(subject.point_player).to eq(p[1])
-        expect(subject.point_side).to eq(p[2])
+    context 'before the point is played' do
+      let(:point_player_per_point) {
+        [ [ 1, 'A' ],
+          [ 1, 'A' ],
+          [ 2, 'B' ],
+          [ 2, 'B' ],
+          [ 3, 'A' ],
+          [ 3, 'A' ],
+          [ 1, 'B' ],
+          [ 1, 'B' ],
+          [ 2, 'A' ],
+          [ 2, 'A' ],
+          [ 3, 'B' ],
+          [ 3, 'B' ],
+          [ 1, 'A' ] ]
+      }
 
-        subject.play_point
+      it 'has the correct player playing for points on the correct side' do
+        point_player_per_point.each do |p|
+          expect(subject.point_player).to eq(p[0])
+          expect(subject.point_side).to eq(p[1])
 
-        # check that things were set properly after playing
-        expect(subject.current_point).to eq(p[0])
-        expect(subject.player_point_opportunities).to eq(p[3])
-        expect(subject.player_point_serves).to eq(p[4])
-        expect(subject.player_point_receives).to eq(p[5])
+          subject.play_point
+        end
+      end
+    end
+
+    context 'after point is played' do
+      let(:expected_point_opportunities_per_point) {
+        [ [ [1,0,0], [1,0,0], [0,0,0] ],
+          [ [2,0,0], [2,0,0], [0,0,0] ],
+          [ [2,1,0], [2,0,0], [0,1,0] ],
+          [ [2,2,0], [2,0,0], [0,2,0] ],
+          [ [2,2,1], [2,0,1], [0,2,0] ],
+          [ [2,2,2], [2,0,2], [0,2,0] ],
+          [ [3,2,2], [2,0,2], [1,2,0] ],
+          [ [4,2,2], [2,0,2], [2,2,0] ],
+          [ [4,3,2], [2,1,2], [2,2,0] ],
+          [ [4,4,2], [2,2,2], [2,2,0] ],
+          [ [4,4,3], [2,2,2], [2,2,1] ],
+          [ [4,4,4], [2,2,2], [2,2,2] ],
+          [ [5,4,4], [3,2,2], [2,2,2] ] ] }
+
+      it 'allows each player the correct number of opportunites per side to play for points' do
+        expected_point_opportunities_per_point.each do |p|
+          subject.play_point
+
+          expect(subject.player_point_opportunities).to eq(p[0])
+          expect(subject.player_point_serves).to eq(p[1])
+          expect(subject.player_point_receives).to eq(p[2])
+        end
       end
     end
   end

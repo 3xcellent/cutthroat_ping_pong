@@ -20,7 +20,6 @@ class PingPong
     set_stats
     @current_point += 1
     change_positions
-    show_stats
   end
 
   def show_output
@@ -31,14 +30,7 @@ class PingPong
 
   private
 
-  def show_stats
-    puts "points #{player_point_opportunities}"
-    puts "serves #{player_point_serves}"
-    puts "rec    #{player_point_receives}"
-  end
-
   def set_stats
-    puts "point player: #{@point_player}"
     @player_point_opportunities[@point_player-1] += 1
     if @point_side == SIDE_A
       @player_point_serves[@point_player-1] += 1
