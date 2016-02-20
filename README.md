@@ -2,4 +2,4 @@
 
 I want to figure out a good rotation for Three-player Ping Pong that allows each person the same opportunity to make points from serving and receiving.
 
-I still need to figure out what happens with in a tie at 11 points.
+Still to be determined is what happens in a tie at 11 points.  Still need to win by two?  First to 11?
